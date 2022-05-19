@@ -1,9 +1,9 @@
 package com.example.belajarmvp1.model;
 
-import java.util.Date;
+import java.util.List;
 
 public interface ITodo {
-    void getTodo();
+    List<Todo> getTodo();
     void addTodo(Todo todo);
     void removeTodo(String id);
 

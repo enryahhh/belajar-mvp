@@ -1,13 +1,24 @@
 package com.example.belajarmvp1;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.belajarmvp1.activity.CreateTodoActivity;
+import com.example.belajarmvp1.fragment.CreateTodoDialogFragment;
+import com.example.belajarmvp1.model.Todo;
+import com.example.belajarmvp1.presenter.TodoPresenter;
+import com.example.belajarmvp1.view.ITodoView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -20,15 +31,16 @@ import com.example.belajarmvp1.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ITodoView {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    TodoPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        presenter = new TodoPresenter(this,new Todo());
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -43,8 +55,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                startActivity(new Intent(MainActivity.this, CreateTodoActivity.class));
+//                Intent intent = new Intent(MainActivity.this, CreateTodoActivity.class);
+//                intent.putExtra("TODO",new Todo());
+//                startActivity(intent);
+//                someActivityResultLauncher.launch(intent);
+                CreateTodoDialogFragment.newInstance(30).show(getSupportFragmentManager(), "dialog");
             }
+
         });
     }
 
@@ -76,4 +93,44 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.onStart();
+        Log.i("","ini onstart");
+    }
+
+    @Override
+    public void showMessage() {
+
+    }
+//
+//    @Override
+//    public void onActivityReenter(int resultCode, Intent data) {
+//        super.onActivityReenter(resultCode, data);
+//    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//            if (resultCode == RESULT_OK) {
+//                Log.i("berhasil",data.getSerializableExtra("DATA").toString());
+//            }
+//
+//    }
+
+//    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+//            new ActivityResultContracts.StartActivityForResult(),
+//            new ActivityResultCallback<ActivityResult>() {
+//                @Override
+//                public void onActivityResult(ActivityResult result) {
+//                    if (result.getResultCode() == Activity.RESULT_OK) {
+//                        // There are no request codes
+//                        Intent data = result.getData();
+////                        Log.i("berhasil",);
+//                        System.out.println(data.getSerializableExtra("DATA").toString());
+//                    }
+//                }
+//            });
 }
