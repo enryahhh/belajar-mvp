@@ -1,5 +1,7 @@
 package com.example.belajarmvp1.model;
 
+import com.example.belajarmvp1.helper.StaticTodos;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +28,23 @@ public class Todo implements ITodo, Serializable {
         this.tgl = today.getTime();
     }
 
-//    public void setTodo(String id,String todo) {
+    public String getIdTodo() {
+        return id;
+    }
+
+    public String getTodo(){
+        return todo;
+    }
+
+    public boolean getIsDone() {
+        return isDone;
+    }
+
+    public Date getTgl() {
+        return tgl;
+    }
+
+    //    public void setTodo(String id,String todo) {
 //        this.id = id;
 //        this.todo = todo;
 //        this.isDone = false;
@@ -38,13 +56,13 @@ public class Todo implements ITodo, Serializable {
 
 
     @Override
-    public List<Todo> getTodo() {
-        return todos;
+    public List<Todo> getTodos() {
+        return StaticTodos.todos;
     }
 
     @Override
     public void addTodo(Todo todo) {
-        todos.add(todo);
+        StaticTodos.todos.add(todo);
     }
 
     @Override
@@ -54,6 +72,6 @@ public class Todo implements ITodo, Serializable {
 
     @Override
     public String toString(){
-        return id;
+        return todo;
     }
 }

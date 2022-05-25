@@ -31,16 +31,16 @@ import com.example.belajarmvp1.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements ITodoView {
+public class MainActivity extends AppCompatActivity  {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-    TodoPresenter presenter;
+//    TodoPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new TodoPresenter(this,new Todo());
+//        presenter = new TodoPresenter(this,new Todo());
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -94,17 +94,22 @@ public class MainActivity extends AppCompatActivity implements ITodoView {
                 || super.onSupportNavigateUp();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        presenter.onStart();
-        Log.i("","ini onstart");
-    }
-
-    @Override
-    public void showMessage() {
-
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        presenter.onStart();
+//        Log.i("","ini onstart");
+//    }
+//
+//    @Override
+//    public void showMessage() {
+//        System.out.println("show message main activity");
+//    }
+//
+//    @Override
+//    public void showTodos() {
+//
+//    }
 //
 //    @Override
 //    public void onActivityReenter(int resultCode, Intent data) {

@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import com.example.belajarmvp1.R;
 import com.example.belajarmvp1.databinding.FragmentCreateTodoDialogListDialogBinding;
 import com.example.belajarmvp1.databinding.FragmentCreateTodoDialogListDialogItemBinding;
+import com.example.belajarmvp1.model.Todo;
+import com.example.belajarmvp1.presenter.TodoPresenter;
+import com.example.belajarmvp1.view.ITodoView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,11 +35,12 @@ import android.widget.Toast;
  *     CreateTodoDialogFragment.newInstance(30).show(getSupportFragmentManager(), "dialog");
  * </pre>
  */
-public class CreateTodoDialogFragment extends BottomSheetDialogFragment {
+public class CreateTodoDialogFragment extends BottomSheetDialogFragment implements ITodoView {
 
     // TODO: Customize parameter argument names
     private static final String ARG_ITEM_COUNT = "item_count";
     private FragmentCreateTodoDialogListDialogBinding binding;
+    TodoPresenter presenter;
 
     // TODO: Customize parameters
     public static CreateTodoDialogFragment newInstance(int itemCount) {
@@ -53,9 +58,10 @@ public class CreateTodoDialogFragment extends BottomSheetDialogFragment {
 
 //        binding = FragmentCreateTodoDialogListDialogBinding.inflate(inflater, container, false);
 //        return binding.getRoot();
+        presenter = new TodoPresenter(this,new Todo());
         View v = inflater.inflate(R.layout.fragment_create_todo_dialog_list_dialog,
                 container, false);
-
+        EditText todoText = v.findViewById(R.id.todoText);
 //        Button algo_button = v.findViewById(R.id.algo_button);
         Button save_todo = v.findViewById(R.id.save_todo);
 
@@ -63,6 +69,7 @@ public class CreateTodoDialogFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v)
             {
+                presenter.onSaveTodo(String.valueOf(todoText.getText()));
                 Toast.makeText(getActivity(),
                         "Tambah Todo", Toast.LENGTH_SHORT)
                         .show();
@@ -97,42 +104,52 @@ public class CreateTodoDialogFragment extends BottomSheetDialogFragment {
         binding = null;
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void showMessage() {
+        System.out.println("show message");
+    }
 
-        final TextView text;
-
-        ViewHolder(FragmentCreateTodoDialogListDialogItemBinding binding) {
-            super(binding.getRoot());
-            text = binding.text;
-        }
+    @Override
+    public void showTodos() {
 
     }
 
-    private class ItemAdapter extends RecyclerView.Adapter<ViewHolder> {
-
-        private final int mItemCount;
-
-        ItemAdapter(int itemCount) {
-            mItemCount = itemCount;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-            return new ViewHolder(FragmentCreateTodoDialogListDialogItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.text.setText(String.valueOf(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mItemCount;
-        }
-
-    }
+//    private class ViewHolder extends RecyclerView.ViewHolder {
+//
+//        final TextView text;
+//
+//        ViewHolder(FragmentCreateTodoDialogListDialogItemBinding binding) {
+//            super(binding.getRoot());
+//            text = binding.text;
+//        }
+//
+//    }
+//
+//    private class ItemAdapter extends RecyclerView.Adapter<ViewHolder> {
+//
+//        private final int mItemCount;
+//
+//        ItemAdapter(int itemCount) {
+//            mItemCount = itemCount;
+//        }
+//
+//        @NonNull
+//        @Override
+//        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//
+//            return new ViewHolder(FragmentCreateTodoDialogListDialogItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+//
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(ViewHolder holder, int position) {
+//            holder.text.setText(String.valueOf(position));
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return mItemCount;
+//        }
+//
+//    }
 }

@@ -24,7 +24,7 @@
         android:textSize="25sp" />
 
     <EditText
-        android:id="@+id/todo"
+        android:id="@+id/todoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"

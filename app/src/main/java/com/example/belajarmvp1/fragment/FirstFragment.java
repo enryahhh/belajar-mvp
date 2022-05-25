@@ -11,11 +11,15 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.belajarmvp1.R;
 import com.example.belajarmvp1.databinding.FragmentFirstBinding;
+import com.example.belajarmvp1.helper.StaticTodos;
+import com.example.belajarmvp1.model.Todo;
+import com.example.belajarmvp1.presenter.TodoPresenter;
+import com.example.belajarmvp1.view.ITodoView;
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements ITodoView {
 
     private FragmentFirstBinding binding;
-
+    TodoPresenter presenter;
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -29,7 +33,7 @@ public class FirstFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        presenter = new TodoPresenter(this,new Todo());
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,4 +49,13 @@ public class FirstFragment extends Fragment {
         binding = null;
     }
 
+    @Override
+    public void showMessage() {
+
+    }
+
+    @Override
+    public void showTodos() {
+        binding.textviewFirst.setText(StaticTodos.todos.get(0).getTodo());
+    }
 }

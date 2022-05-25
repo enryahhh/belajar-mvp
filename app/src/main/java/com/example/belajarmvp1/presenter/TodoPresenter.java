@@ -2,6 +2,7 @@ package com.example.belajarmvp1.presenter;
 
 import android.util.Log;
 
+import com.example.belajarmvp1.helper.StaticTodos;
 import com.example.belajarmvp1.model.ITodo;
 import com.example.belajarmvp1.model.Todo;
 import com.example.belajarmvp1.view.ITodoView;
@@ -12,7 +13,7 @@ import java.util.UUID;
 public class TodoPresenter implements ITodoPresenter{
     private ITodo itodo;
     private ITodoView viewTodo;
-//    private List<Todo> todos = new ArrayList<Todo>();
+//    private List<Todo> todos = StaticTodos.todos;
     public TodoPresenter(ITodoView viewTodo ,ITodo itodo){
         this.itodo = itodo;
         this.viewTodo = viewTodo;
@@ -23,18 +24,20 @@ public class TodoPresenter implements ITodoPresenter{
         String id = String.valueOf(UUID.randomUUID());
         Todo todoObj = new Todo(id,todo);
 //        todoObj.setTodo(id,todo);
+//        StaticTodos.todos.add(todoObj);
         itodo.addTodo(todoObj);
 //        System.out.println(todo);
-        itodo.getTodo();
-        System.out.println(itodo.getTodo().toString());
+        itodo.getTodos();
+        System.out.println(StaticTodos.todos.toString());
+        viewTodo.showMessage();
+        viewTodo.showTodos();
     }
 
     @Override
     public void onStart() {
 //        itodo = new Todo();
-        itodo.getTodo();
-        List<Todo> tes = itodo.getTodo();
-        Log.i("debug",tes.toString());
+        itodo.getTodos();
+        Log.i("debug",StaticTodos.todos.toString());
     }
 
     @Override
