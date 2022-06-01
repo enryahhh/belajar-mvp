@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.belajarmvp1.activity.CreateTodoActivity;
+import com.example.belajarmvp1.contract.TodoContract;
 import com.example.belajarmvp1.fragment.CreateTodoDialogFragment;
 import com.example.belajarmvp1.model.Todo;
 import com.example.belajarmvp1.presenter.TodoPresenter;
+import com.example.belajarmvp1.presenter.TodoPresenter2;
 import com.example.belajarmvp1.view.ITodoView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -31,21 +34,21 @@ import com.example.belajarmvp1.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity  {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements TodoContract.View {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-//    TodoPresenter presenter;
+    TodoPresenter2 presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        presenter = new TodoPresenter(this,new Todo());
+        presenter = new TodoPresenter2(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.toolbar);
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity  {
 //                intent.putExtra("TODO",new Todo());
 //                startActivity(intent);
 //                someActivityResultLauncher.launch(intent);
-                CreateTodoDialogFragment.newInstance(30).show(getSupportFragmentManager(), "dialog");
+                CreateTodoDialogFragment.newInstance(30,presenter).show(getSupportFragmentManager(), "dialog");
             }
 
         });
@@ -92,6 +95,16 @@ public class MainActivity extends AppCompatActivity  {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void showMessage() {
+
+    }
+
+    @Override
+    public void showTodos(List<Todo> items) {
+
     }
 
 //    @Override
