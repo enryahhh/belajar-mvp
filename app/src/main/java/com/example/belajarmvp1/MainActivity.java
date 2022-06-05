@@ -1,12 +1,15 @@
 package com.example.belajarmvp1;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.belajarmvp1.activity.CreateTodoActivity;
 import com.example.belajarmvp1.contract.TodoContract;
 import com.example.belajarmvp1.fragment.CreateTodoDialogFragment;
+import com.example.belajarmvp1.fragment.FirstFragment;
+import com.example.belajarmvp1.helper.CloseDialogListener;
 import com.example.belajarmvp1.model.Todo;
 import com.example.belajarmvp1.presenter.TodoPresenter;
 import com.example.belajarmvp1.presenter.TodoPresenter2;
@@ -17,6 +20,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,11 +40,12 @@ import android.view.MenuItem;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TodoContract.View {
+public class MainActivity extends AppCompatActivity implements TodoContract.View, CloseDialogListener {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     TodoPresenter2 presenter;
+    FirstFragment firstFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,11 @@ public class MainActivity extends AppCompatActivity implements TodoContract.View
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.ff,FirstFragment.class,null)
+                .setReorderingAllowed(true).addToBackStack(null).commit();
+        firstFragment = (FirstFragment) fm.findFragmentById(R.id.ff);
+//        fm.getFragment(new Bundle(),"ff");
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements TodoContract.View
 //                intent.putExtra("TODO",new Todo());
 //                startActivity(intent);
 //                someActivityResultLauncher.launch(intent);
-                CreateTodoDialogFragment.newInstance(30,presenter).show(getSupportFragmentManager(), "dialog");
+                CreateTodoDialogFragment.newInstance(30).show(getSupportFragmentManager(), "dialog");
             }
 
         });
@@ -106,6 +115,24 @@ public class MainActivity extends AppCompatActivity implements TodoContract.View
     public void showTodos(List<Todo> items) {
 
     }
+
+    @Override
+    public void handleDialogClose(DialogInterface dialog) {
+
+    }
+
+    @Override
+    public void handleDialogCloseList(DialogInterface dialog) {
+        FirstFragment frag = (FirstFragment)
+                getSupportFragmentManager().findFragmentById(R.id.ff);
+//        getSupportFragmentManager().beginTransaction().replace();
+        frag.handleDialogCloseList(dialog);
+    }
+
+//    public void handleCloseDialog(DialogInterface dialog){
+//
+//        firstFragment.handleCloseDialog();
+//    }
 
 //    @Override
 //    protected void onStart() {

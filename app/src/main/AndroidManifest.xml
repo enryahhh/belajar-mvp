@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BelajarMVP1">
         <activity
+            android:name=".activity.BottomNavActivity"
+            android:exported="false"
+            android:label="@string/title_activity_bottom_nav" />
+        <activity
             android:name=".activity.CreateTodoActivity"
             android:exported="false" />
         <activity

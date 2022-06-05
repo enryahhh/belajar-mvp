@@ -59,6 +59,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
         return mItemCount;
     }
 
+    public void setTodoList(List<Todo> todos){
+        this.tes = todos;
+        notifyDataSetChanged();
+    }
 
 
 }

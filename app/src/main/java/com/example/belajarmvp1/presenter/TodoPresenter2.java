@@ -1,8 +1,12 @@
 package com.example.belajarmvp1.presenter;
 
+import android.content.DialogInterface;
+
 import com.example.belajarmvp1.contract.TodoContract;
 import com.example.belajarmvp1.interactor.TodoInteractor;
 import com.example.belajarmvp1.model.Todo;
+
+import java.util.List;
 
 public class TodoPresenter2 implements TodoContract.Presenter {
 
@@ -22,4 +26,5 @@ public class TodoPresenter2 implements TodoContract.Presenter {
     public void loadTodo() {
         view_c.showTodos(todoInteractor.getTodos());
     }
+
 }

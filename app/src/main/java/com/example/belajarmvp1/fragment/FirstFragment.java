@@ -1,6 +1,9 @@
 package com.example.belajarmvp1.fragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +15,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.belajarmvp1.MainActivity;
 import com.example.belajarmvp1.R;
+import com.example.belajarmvp1.activity.BottomNavActivity;
 import com.example.belajarmvp1.contract.TodoContract;
 import com.example.belajarmvp1.databinding.FragmentTodoItemBinding;
 import com.example.belajarmvp1.databinding.FragmentFirstBinding;
+import com.example.belajarmvp1.helper.CloseDialogListener;
 import com.example.belajarmvp1.helper.StaticTodos;
 import com.example.belajarmvp1.helper.TodoAdapter;
 import com.example.belajarmvp1.model.Todo;
@@ -25,11 +31,13 @@ import com.example.belajarmvp1.view.ITodoView;
 
 import java.util.List;
 
-public class FirstFragment extends Fragment implements TodoContract.View {
+public class FirstFragment extends Fragment implements TodoContract.View, CloseDialogListener {
 
     private FragmentFirstBinding binding;
     private RecyclerView recyclerView;
-    TodoContract.Presenter presenter;
+    private TodoPresenter2 presenter;
+    private TodoAdapter adapt;
+    String tes;
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -45,20 +53,27 @@ public class FirstFragment extends Fragment implements TodoContract.View {
         super.onViewCreated(view, savedInstanceState);
         presenter = new TodoPresenter2(this);
         System.out.println("tes tampil todos");
+        tes = "asdjasd";
         recyclerView = binding.listTodoItem;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         presenter.loadTodo();
         System.out.println("oncreated");
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                Intent intent = new Intent(getActivity(), BottomNavActivity.class);
+//                intent.putExtra("TODO",new Todo());
+                startActivity(intent);
             }
         });
     }
 
+//    public void handleCloseDialog(){
+//        presenter = new TodoPresenter2(this);
+//        presenter.loadTodo();
+//        Log.i(presenter.toString(),"tesasd");
+//        System.out.println("close dialog ff");
+//    }
 
     @Override
     public void onStart() {
@@ -91,9 +106,11 @@ public class FirstFragment extends Fragment implements TodoContract.View {
 
     @Override
     public void showTodos(List<Todo> items) {
-        TodoAdapter adapt = new TodoAdapter(items);
+        adapt = new TodoAdapter(items);
+//        recyclerView = recyclerView.findViewById(R.id.list_todo_item);
         recyclerView.setAdapter(adapt);
-        adapt.notifyItemInserted(0);
+        adapt.notifyDataSetChanged();
+        System.out.println(tes);
         System.out.println(items);
     }
 
@@ -101,6 +118,17 @@ public class FirstFragment extends Fragment implements TodoContract.View {
 
     public void doSomething(){
         System.out.println("wadidawwww");
+    }
+
+    @Override
+    public void handleDialogClose(DialogInterface dialog) {
+        System.out.println("ini saat close dialog");
+    }
+
+    @Override
+    public void handleDialogCloseList(DialogInterface dialog) {
+        System.out.println("close dialog handle mamang");
+        presenter.loadTodo();
     }
 //    @Override
 //    public void showTodos() {

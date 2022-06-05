@@ -1,14 +1,18 @@
 package com.example.belajarmvp1.fragment;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 
+import com.example.belajarmvp1.MainActivity;
 import com.example.belajarmvp1.R;
 import com.example.belajarmvp1.contract.TodoContract;
 import com.example.belajarmvp1.databinding.FragmentCreateTodoDialogListDialogBinding;
 import com.example.belajarmvp1.databinding.FragmentTodoItemBinding;
+import com.example.belajarmvp1.helper.CloseDialogListener;
 import com.example.belajarmvp1.helper.TodoAdapter;
 import com.example.belajarmvp1.model.Todo;
 import com.example.belajarmvp1.presenter.TodoPresenter;
@@ -56,7 +60,7 @@ public class CreateTodoDialogFragment extends BottomSheetDialogFragment implemen
     FirstFragment fragmentf;
 
     // TODO: Customize parameters
-    public static CreateTodoDialogFragment newInstance(int itemCount,TodoPresenter2 presenter2) {
+    public static CreateTodoDialogFragment newInstance(int itemCount) {
         final CreateTodoDialogFragment fragment = new CreateTodoDialogFragment();
         final Bundle args = new Bundle();
         args.putInt(ARG_ITEM_COUNT, itemCount);
@@ -137,17 +141,28 @@ public class CreateTodoDialogFragment extends BottomSheetDialogFragment implemen
 
     @Override
     public void showTodos(List<Todo> items) {
-        transaction.replace(R.id.ff,FirstFragment.class,null).setReorderingAllowed(true);
+//        transaction.replace(R.id.ff,FirstFragment.class,null).setReorderingAllowed(true);
 //        transaction.attach(fragmentf).detach(fragmentf);
-        transaction.commit();
-        TodoAdapter adapt = new TodoAdapter(items);
-        adapt.notifyDataSetChanged();
-        System.out.println("berhasil");
-        System.out.println();
+//        transaction.commit();
+//        TodoAdapter adapt = new TodoAdapter(items);
+//        adapt.notifyDataSetChanged();
+//        System.out.println("berhasil");
+//        System.out.println();
     }
 
+    @Override
+    public void handleDialogClose(DialogInterface dialog) {
 
-//    private class ViewHolder extends RecyclerView.ViewHolder {
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity instanceof CloseDialogListener)
+            ((CloseDialogListener)activity).handleDialogCloseList(dialog);
+    }
+
+    //    private class ViewHolder extends RecyclerView.ViewHolder {
 //
 //        final TextView text;
 //
